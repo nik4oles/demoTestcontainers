@@ -1,0 +1,466 @@
+databaseChangeLog:
+  - changeSet:
+      id: 000-1
+      author: OD
+      changes:
+        - createTable:
+            tableName: groups
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(255)
+              - column:
+                  name: description
+                  type: varchar(255)
+              - column:
+                  name: reg_date
+                  type: date
+              - column:
+                  name: user_id
+                  type: bigint
+              - column:
+                  name: photo_id
+                  type: bigint
+              - column:
+                  name: short_story_about_group
+                  type: varchar(255)
+              - column:
+                  name: is_private
+                  type: boolean
+              - column:
+                  name: enabled
+                  type: boolean
+              - column:
+                  name: is_official_group
+                  type: boolean
+            constraints:
+              - foreignKey:
+                    baseColumnNames: photo_id
+                    baseTableName: groups
+                    referencedColumnNames: id
+                    referencedTableName: photos
+              - foreignKey:
+                  baseColumnNames: user_id
+                  baseTableName: groups
+                  referencedColumnNames: id
+                  referencedTableName: users
+              - uniqueConstraint:
+                  columnNames: [ name ]
+        - createTable:
+            tableName: albums
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(255)
+              - column:
+                  name: description
+                  type: varchar(255)
+              - column:
+                  name: date_creation
+                  type: date
+              - column:
+                  name: is_private
+                  type: boolean
+            constraints:
+              - uniqueConstraint:
+                  columnNames: [ name ]
+        - createTable:
+            tableName: photos
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: album_id
+                  type: bigint
+              - column:
+                  name: uri
+                  type: VARBINARY
+              - column:
+                  name: title
+                  type: varchar(255)
+              - column:
+                  name: publication_date
+                  type: date
+            constraints:
+              - foreignKey:
+                  baseColumnNames: album_id
+                  baseTableName: photos
+                  referencedColumnNames: id
+                  referencedTableName: albums
+        - createTable:
+            tableName: likes
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: user_id
+                  type: bigint
+              - column:
+                  name: emotion
+                  type: varchar(255)
+            constraints:
+              - foreignKey:
+                  baseColumnNames: user_id
+                  baseTableName: likes
+                  referencedColumnNames: id
+                  referencedTableName: users
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(255)
+              - column:
+                  name: lastname
+                  type: varchar(255)
+              - column:
+                  name: nickname
+                  type: varchar(255)
+              - column:
+                  name: email
+                  type: varchar(255)
+              - column:
+                  name: password
+                  type: varchar(255)
+              - column:
+                  name: short_story_about_user
+                  type: varchar(255)
+              - column:
+                  name: number
+                  type: varchar(15)
+              - column:
+                  name: date_of_birth
+                  type: date
+              - column:
+                  name: reg_date
+                  type: date
+              - column:
+                  name: gender
+                  type: varchar(255)
+              - column:
+                  name: status
+                  type: varchar(255)
+
+              - column:
+                  name: profile_photo_id
+                  type: bigint
+              - column:
+                  name: main_album_id
+                  type: bigint
+
+              - column:
+                  name: country
+                  type: varchar(255)
+              - column:
+                  name: city
+                  type: varchar(255)
+              - column:
+                  name: popularity
+                  type: varchar(255)
+              - column:
+                  name: is_private
+                  type: boolean
+              - column:
+                  name: enabled
+                  type: boolean
+            constraints:
+              - foreignKey:
+                  baseColumnNames: profile_photo_id
+                  baseTableName: users
+                  referencedColumnNames: id
+                  referencedTableName: photos
+              - foreignKey:
+                  baseColumnNames: main_album_id
+                  baseTableName: users
+                  referencedColumnNames: id
+                  referencedTableName: albums
+        - createTable:
+            tableName: roles
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(255)
+
+
+
+  - changeSet:
+      id: 000-2
+      author: OD
+      changes:
+        - createTable:
+            tableName: users_subscribers
+            columns:
+              - column:
+                  name: user_id
+                  type: BIGINT
+              - column:
+                  name: subscriber_id
+                  type: BIGINT
+
+        - createTable:
+            tableName: users_albums
+            columns:
+              - column:
+                  name: user_id
+                  type: BIGINT
+              - column:
+                  name: album_id
+                  type: BIGINT
+
+        - createTable:
+            tableName: users_groups
+            columns:
+              - column:
+                  name: user_id
+                  type: BIGINT
+              - column:
+                  name: group_id
+                  type: BIGINT
+
+        - createTable:
+            tableName: users_roles
+            columns:
+              - column:
+                  name: user_id
+                  type: BIGINT
+              - column:
+                  name: role_id
+                  type: BIGINT
+
+        - createTable:
+            tableName: groups_albums
+            columns:
+              - column:
+                  name: group_id
+                  type: BIGINT
+              - column:
+                  name: album_id
+                  type: BIGINT
+
+        - createTable:
+            tableName: groups_subscribers
+            columns:
+              - column:
+                  name: group_id
+                  type: BIGINT
+              - column:
+                  name: subscriber_id
+                  type: BIGINT
+
+        - createTable:
+            tableName: photos_likes
+            columns:
+              - column:
+                  name: photo_id
+                  type: BIGINT
+              - column:
+                  name: like_id
+                  type: BIGINT
+
+        - createTable:
+            tableName: photos_tag_users
+            columns:
+              - column:
+                  name: user_id
+                  type: BIGINT
+              - column:
+                  name: photo_id
+                  type: BIGINT
+
+
+  - changeSet:
+      id: 000-3
+      author: OD
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: users_subscribers
+            constraintName: fk_users_subscribers
+#            deferrable: false
+#            initiallyDeferred: false
+            onDelete: CASCADE
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: users
+        - addForeignKeyConstraint:
+            baseColumnNames: subscriber_id
+            baseTableName: users_subscribers
+            constraintName: fk_subscribers_users
+            #            deferrable: false
+            #            initiallyDeferred: false
+            onDelete: CASCADE
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: users
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: users_albums
+            constraintName: fk_users_albums
+            #            deferrable: false
+            #            initiallyDeferred: false
+            onDelete: CASCADE
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: users
+        - addForeignKeyConstraint:
+            baseColumnNames: album_id
+            baseTableName: users_albums
+            constraintName: fk_albums_users
+            #            deferrable: false
+            #            initiallyDeferred: false
+            onDelete: CASCADE
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: albums
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: users_groups
+            constraintName: fk_users_groups
+            #            deferrable: false
+            #            initiallyDeferred: false
+            onDelete: CASCADE
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: users
+        - addForeignKeyConstraint:
+            baseColumnNames: group_id
+            baseTableName: users_groups
+            constraintName: fk_groups_users
+            #            deferrable: false
+            #            initiallyDeferred: false
+            onDelete: CASCADE
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: groups
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: users_roles
+            constraintName: fk_users_albums
+            #            deferrable: false
+            #            initiallyDeferred: false
+            onDelete: CASCADE
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: users
+        - addForeignKeyConstraint:
+            baseColumnNames: role_id
+            baseTableName: users_roles
+            constraintName: fk_roles_users
+            #            deferrable: false
+            #            initiallyDeferred: false
+            onDelete: CASCADE
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: roles
+        - addForeignKeyConstraint:
+            baseColumnNames: group_id
+            baseTableName: groups_albums
+            constraintName: fk_groups_albums
+            #            deferrable: false
+            #            initiallyDeferred: false
+            onDelete: CASCADE
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: groups
+        - addForeignKeyConstraint:
+            baseColumnNames: album_id
+            baseTableName: groups_albums
+            constraintName: fk_albums_groups
+            #            deferrable: false
+            #            initiallyDeferred: false
+            onDelete: CASCADE
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: albums
+        - addForeignKeyConstraint:
+            baseColumnNames: group_id
+            baseTableName: groups_subscribers
+            constraintName: fk_groups_users
+            #            deferrable: false
+            #            initiallyDeferred: false
+            onDelete: CASCADE
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: groups
+        - addForeignKeyConstraint:
+            baseColumnNames: subscriber_id
+            baseTableName: groups_subscribers
+            constraintName: fk_users_groups
+            #            deferrable: false
+            #            initiallyDeferred: false
+            onDelete: CASCADE
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: users
+        - addForeignKeyConstraint:
+            baseColumnNames: like_id
+            baseTableName: photos_likes
+            constraintName: fk_photos_likes
+            #            deferrable: false
+            #            initiallyDeferred: false
+            onDelete: CASCADE
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: likes
+        - addForeignKeyConstraint:
+            baseColumnNames: photo_id
+            baseTableName: photos_likes
+            constraintName: fk_likes_photos
+            #            deferrable: false
+            #            initiallyDeferred: false
+            onDelete: CASCADE
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: photos
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: photos_tag_users
+            constraintName: fk_tag_photos_users
+            #            deferrable: false
+            #            initiallyDeferred: false
+            onDelete: CASCADE
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: users
+        - addForeignKeyConstraint:
+            baseColumnNames: photo_id
+            baseTableName: photos_tag_users
+            constraintName: fk_users_tag_photos
+            #            deferrable: false
+            #            initiallyDeferred: false
+            onDelete: CASCADE
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: photos

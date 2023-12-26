@@ -1,0 +1,21 @@
+package com.example.demo.models.dto.response;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.net.URI;
+import java.time.LocalDate;
+import java.util.List;
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class PhotoResponseDTO {
+    private long id;
+    private long albumId;
+    private URI uri;
+    private String title;
+    private int like;
+    private List<String> tagUserByNickName;
+    private LocalDate publicationDate;
+}
